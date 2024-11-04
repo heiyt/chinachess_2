@@ -131,6 +131,7 @@ void ChinaChessBoard::clickOnChess(Chess &chess, int row, int col) {
                 // 吃掉棋子
                 chinaChess.eatChess(chess);
                 chinaChess.moveChess(chinaChess.chesses[selected_id], row, col);
+                qDebug() << "吃掉了棋子" << chess.getID();
 
                 // 切换玩家
                 Player p;
@@ -186,6 +187,7 @@ void ChinaChessBoard::clickonBoard(int row, int col) {
 
             // 移动棋子
             chinaChess.moveChess(chinaChess.chesses[selected_id], row, col);
+            qDebug() << "移动了棋子" << chinaChess.chesses[selected_id].getID();
 
             // 切换玩家
             selected_id = -1;
@@ -237,7 +239,7 @@ void ChinaChessBoard::ai_run() {
         // 移动棋子
         chinaChess.moveChess(chinaChess.chesses[id1], row1, col1);
     }
-
+    qDebug() << "ai执行完毕";
     // 切换玩家
     Player p;
     if (chinaChess.isWin(p)) {

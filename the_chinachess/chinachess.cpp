@@ -70,73 +70,73 @@ bool ChinaChess::canMovePAO(Chess chess, int row, int col) {
     if (row < 1 || col < 1 || row > 10 || col > 9) {
         return false;
     }
+    if (chess.getRow() != row && chess.getCol() != col) {
+        return false;
+    }
     int geShu = 0;
     if (chess.getRow() == row && chess.getCol() != col) {
         if (col > chess.getCol()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() != chess.getID() && chesses[i].getRow() == row && chesses[i].getCol() > chess.getCol() && chesses[i].getCol() < col) {
+            for (int i = chess.getCol() + 1; i < col; i++) {
+                if (china_chess_board[row][i] != -1) {
                     geShu++;
                 }
             }
         }
         if (col < chess.getCol()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() != chess.getID() && chesses[i].getRow() == row && chesses[i].getCol() < chess.getCol() && chesses[i].getCol() > col) {
-                    geShu++;                    }
+            for (int i = col + 1; i < chess.getCol(); i++) {
+                if (china_chess_board[row][i] != -1) {
+                    geShu++;
+                }
             }
         }
     }
     if (chess.getRow() != row && chess.getCol() == col) {
         if (row > chess.getRow()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() != chess.getID() && chesses[i].getCol() == col && chesses[i].getRow() > chess.getRow() && chesses[i].getRow() < row) {
+            for (int i = chess.getRow() + 1; i < row; i++) {
+                if (china_chess_board[i][col] != -1) {
                     geShu++;
                 }
             }
         }
         if (row < chess.getRow()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() != chess.getID() && chesses[i].getCol() == col && chesses[i].getRow() < chess.getRow() && chesses[i].getRow() > row) {
+            for (int i = row + 1; i < chess.getRow(); i++) {
+                if (china_chess_board[i][col] != -1) {
                     geShu++;
                 }
             }
         }
     }
-    if (chess.getRow() != row && chess.getCol() != col) {
-        return false;
-    }
     if (geShu == 1) {
-        for (int i = 0; i < 32; i++) {
-            if (chesses[i].getRow() == row && chesses[i].getCol() == col) {
+        if(china_chess_board[row][col] != -1){
+            if (chesses[china_chess_board[row][col]].getPlayer() != chess.getPlayer()) {
                 return true;
             }
         }
         return false;
     }
     if (geShu == 0) {
-        for (int i = 0; i < 32; i++) {
-            if (chesses[i].getRow() == row && chesses[i].getCol() == col) {
-                return false;
-            }
+        if(china_chess_board[row][col] == -1){
+            return true;
         }
-        return true;
+        return false;
     } else {
         return false;
     }
 }
+// 车，相，马 需要通过虚拟的board来指定走棋规则
 bool ChinaChess::canMoveCHE(Chess chess, int row, int col) {
     if (chess.getRow() == row && chess.getCol() != col) {
         if (col > chess.getCol()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() !=chess.getID() && chesses[i].getRow() == row && chesses[i].getCol() > chess.getCol() && chesses[i].getCol() < col) {
+            for (int i = chess.getCol() + 1; i < col; i++) {
+                if (china_chess_board[row][i] != -1) {
                     return false;
                 }
             }
             return true;
         }
         if (col < chess.getCol()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() !=chess.getID() && chesses[i].getRow() == row && chesses[i].getCol() < chess.getCol() && chesses[i].getCol() > col) {
+            for (int i = col+1; i < chess.getCol(); i++) {
+                if (china_chess_board[row][i] != -1) {
                     return false;
                 }
             }
@@ -145,16 +145,16 @@ bool ChinaChess::canMoveCHE(Chess chess, int row, int col) {
     }
     if (chess.getRow() != row && chess.getCol() == col) {
         if (row > chess.getRow()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() !=chess.getID() && chesses[i].getCol() == col && chesses[i].getRow() > chess.getRow() && chesses[i].getRow() < row) {
+            for (int i = chess.getRow() + 1; i < row; i++) {
+                if (china_chess_board[i][col] != -1) {
                     return false;
                 }
             }
             return true;
         }
         if (row < chess.getRow()) {
-            for (int i = 0; i < 32; i++) {
-                if (chesses[i].getID() !=chess.getID() && chesses[i].getCol() == col && chesses[i].getRow() < chess.getRow() && chesses[i].getRow() > row) {
+            for (int i = row + 1; i < chess.getRow(); i++) {
+                if (china_chess_board[i][col] != -1) {
                     return false;
                 }
             }
@@ -165,18 +165,14 @@ bool ChinaChess::canMoveCHE(Chess chess, int row, int col) {
 }
 bool ChinaChess::canMoveMA(Chess chess, int row, int col) {
     if (abs(chess.getRow() - row) == 2 && abs(chess.getCol() - col) == 1) {
-        for (int i = 0; i < 32; i++) {
-            if (chesses[i].getID() != chess.getID() && 2 * chesses[i].getRow() == (row + chess.getRow()) && chesses[i].getCol() == chess.getCol()) {
-                return false;
-            }
+        if (china_chess_board[(chess.getRow() + row) / 2][chess.getCol()] != -1) {
+            return false;
         }
         return true;
     }
     if (abs(chess.getCol() - col) == 2 && abs(chess.getRow() - row) == 1) {
-        for (int i = 0; i < 32; i++) {
-            if (chesses[i].getID() != chess.getID() && 2 * chesses[i].getCol() == (col + chess.getCol()) && chesses[i].getRow() == chess.getRow()) {
-                return false;
-            }
+        if (china_chess_board[chess.getRow()][(chess.getCol() + col) / 2] != -1) {
+            return false;
         }
         return true;
     }
@@ -187,10 +183,8 @@ bool ChinaChess::canMoveXIANG(Chess chess, int row, int col) {
         return false;
     }
     if (abs(chess.getRow() - row) == 2 && abs(chess.getCol() - col) == 2) {
-        for (int i = 0; i < 32; i++) {
-            if ((2 * chesses[i].getRow() == row + chess.getRow()) && (2 * chesses[i].getCol() == col + chess.getCol())) {
-                return false;
-            }
+        if (china_chess_board[(chess.getRow() + row) / 2][(chess.getCol() + col) / 2] != -1) {
+            return false;
         }
         return true;
     }
@@ -252,7 +246,5 @@ void ChinaChess::moveChess(Chess &chess, int row, int col) {
 void ChinaChess::eatChess(Chess &be_chess) {
     china_chess_board[be_chess.getRow()][be_chess.getCol()] = -1;
     be_chess.set_is_died(true);
-//    be_chess.setCol(-1);
-//    be_chess.setRow(-1);
 }
 

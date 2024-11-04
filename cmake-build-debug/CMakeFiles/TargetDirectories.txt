@@ -1,0 +1,5 @@
+D:/Projects/ClionProjects/chinachess_2/cmake-build-debug/CMakeFiles/chinachess_2.dir
+D:/Projects/ClionProjects/chinachess_2/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Projects/ClionProjects/chinachess_2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Projects/ClionProjects/chinachess_2/cmake-build-debug/CMakeFiles/chinachess_2_autogen_timestamp_deps.dir
+D:/Projects/ClionProjects/chinachess_2/cmake-build-debug/CMakeFiles/chinachess_2_autogen.dir

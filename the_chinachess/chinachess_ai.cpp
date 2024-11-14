@@ -229,35 +229,50 @@ void chinaChessSetTree(ChinaChess &chinaChess, std::shared_ptr<TreeNode> node, i
     }
 }
 
-MinimaxResult minimax(std::shared_ptr<TreeNode> node, int depth, bool isMaximizingPlayer) {
-    // 终止条件：到达叶节点或深度为0
-    if (node == nullptr || depth == 1) {
-        return { node ? node->getPoint() : -99999, node ? node->getID() : -1,
-                 node ? node->getRow() : -1, node ? node->getCol() : -1 }; // 返回叶节点的点数值和ID
+MinimaxResult minimax(const std::shared_ptr<TreeNode>& node, int depth, bool isMaximizingPlayer,int &alpha,int &beta) {
+    if (node == nullptr || depth == 0) {
+        return {node ? node->getPoint() : -99999,
+                node ? node->getID() : -1,
+                node ? node->getRow() : -1,
+                node ? node->getCol() : -1}; // 返回叶节点的点数值和ID
     }
     if (isMaximizingPlayer) {
         MinimaxResult bestResult = { -99999, -1, -1, -1 }; // 初始值为负无穷
         const auto& children = node->getChildren(); // 获取所有子节点
-        for (std::shared_ptr<TreeNode> child : children) {
-            MinimaxResult eval = minimax(child, depth - 1, false); // 切换为极小化
+        for (const std::shared_ptr<TreeNode>& child : children) {
+            MinimaxResult eval = minimax(child, depth - 1, false, alpha, beta); // 切换为极小化
             if (eval.value > bestResult.value) {
                 bestResult.value = eval.value;
                 bestResult.id = child->getID(); // 记录最佳子节点的ID
                 bestResult.row = child->getRow();
                 bestResult.col = child->getCol();
             }
+            // 更新 alpha 并进行剪枝
+            if (depth == 1) {
+                alpha = std::max(alpha, eval.value);
+                if (beta <= alpha) {
+                    break; // beta 剪枝
+                }
+            }
         }
         return bestResult;
     } else {
         MinimaxResult bestResult = { 99999, -1, -1, -1 }; // 初始值为正无穷
         const auto& children = node->getChildren(); // 获取所有子节点
-        for (std::shared_ptr<TreeNode> child : children) {
-            MinimaxResult eval = minimax(child, depth - 1, true); // 切换为极大化
+        for (const std::shared_ptr<TreeNode>& child : children) {
+            MinimaxResult eval = minimax(child, depth - 1, true, alpha, beta); // 切换为极大化
             if (eval.value < bestResult.value) {
                 bestResult.value = eval.value;
                 bestResult.id = child->getID(); // 记录最佳子节点的ID
                 bestResult.row = child->getRow();
                 bestResult.col = child->getCol();
+            }
+            // 更新 beta 并进行剪枝
+            if (depth == 1) {
+                beta = std::min(beta, eval.value);
+                if (beta <= alpha) {
+                    break; // alpha 剪枝
+                }
             }
         }
         return bestResult;
@@ -266,9 +281,11 @@ MinimaxResult minimax(std::shared_ptr<TreeNode> node, int depth, bool isMaximizi
 
 void ai_Tree(ChinaChess chinaChess, int &id, int &row, int &col) {
     MinimaxResult minimaxResult{};
+    int alpha = -1000000;
+    int beta = 1000000;
     auto root = std::make_shared<TreeNode>(0, 0, 0, 0);
     chinaChessSetTree(chinaChess, root, 4);
-    minimaxResult = minimax(root,4, true);
+    minimaxResult = minimax(root, 4, true, alpha, beta);
     id = minimaxResult.id;
     row = minimaxResult.row;
     col = minimaxResult.col;

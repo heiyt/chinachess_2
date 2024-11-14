@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "chinachess_2",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "chinachess_2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chinachess_2-Debug-602c4338f0704dff81ee.json",
+					"name" : "chinachess_2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "chinachess_2_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chinachess_2_autogen-Debug-fc84411908cba1f2c19d.json",
+					"name" : "chinachess_2_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "chinachess_2_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chinachess_2_autogen_timestamp_deps-Debug-4f3917c1fb42b52eab12.json",
+					"name" : "chinachess_2_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Projects/ClionProjects/chinachess_2/cmake-build-debug",
+		"source" : "D:/Projects/ClionProjects/chinachess_2"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

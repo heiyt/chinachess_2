@@ -4,6 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_ChinaChessBoard.h" resolved
 
+#include <iostream>
 #include "chinachessboard.h"
 #include "ui_ChinaChessBoard.h"
 
@@ -217,7 +218,20 @@ void ChinaChessBoard::ai_run() {
     int id1;
     int row1, col1;
 
+
+    std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
     ai_Tree(chinaChess1, id1, row1, col1);
+    std::chrono::time_point<std::chrono::system_clock>  end = std::chrono::system_clock::now();
+    // floating-point duration: no duration_cast needed
+    std::chrono::duration<double, std::milli> fp_ms = end - start;
+    // integral duration: requires duration_cast
+    auto int_ms = duration_cast<std::chrono::milliseconds>(fp_ms);
+    // converting integral duration to integral duration of shorter divisible time unit: no duration_cast needed
+    std::chrono::duration<long, std::micro> int_usec = int_ms;
+    std::cout << "took " << fp_ms.count() << " ms, "
+              << "or " << int_ms.count() << " whole milliseconds "
+              << "(which is " << int_usec.count() << " whole microseconds)" << std::endl;
+
 
     if (chinaChess.china_chess_board[row1][col1] != -1) {
 
